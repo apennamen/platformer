@@ -1,0 +1,10 @@
+{
+  "name": "platformer",
+  "version": "0.0.1",
+  "description": "A game framework to create platformers.",
+  "main": "index.js",
+  "repository": "https://github.com/apennamen/platformer",
+  "author": "Adrien Pennamen",
+  "license": "MIT",
+  "private": false
+}
