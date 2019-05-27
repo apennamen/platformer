@@ -34,12 +34,7 @@ export default class GameGrid extends HTMLElement {
 
     const $wrapper = this._shadowRoot.querySelector('.wrapper');
 
-    const hostStyle = this._shadowRoot.querySelector('style');
-    hostStyle.innerHTML += `
-      :host {
-          --grid-width: ${height};
-      }
-    `;
+    const hostStyle = this.style.setProperty('--grid-width', height);
 
     for (let i = 1; i <= width * height; i++) {
       const elem = document.createElement('div');
