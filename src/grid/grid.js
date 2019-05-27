@@ -15,12 +15,17 @@ template.innerHTML = `
     .elem {
       border: 1px dashed grey;
       cursor: pointer;
+      text-align: center;
     }
   </style>
   <div class="wrapper"></div>
 `;
 
 export default class GameGrid extends HTMLElement {
+  static get observedAttributes() {
+    return ['height', 'width'];
+  }
+
   constructor() {
     super();
     // Shadow root element
@@ -28,19 +33,34 @@ export default class GameGrid extends HTMLElement {
     this._shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
-  connectedCallback() {
-    const width = this.getAttribute('width');
-    const height = this.getAttribute('height');
-
+  attributeChangedCallback(name, _, newValue) {
     const $wrapper = this._shadowRoot.querySelector('.wrapper');
+    $wrapper.innerHTML = null;
 
-    const hostStyle = this.style.setProperty('--grid-width', height);
+    switch(name) {
+      case 'width':
+        const height = this.getAttribute('height');
+        for (let i = 1; i <= newValue * height; i++) {
+          const elem = document.createElement('div');
+          elem.innerHTML = i;
+          elem.setAttribute('class', 'elem');
+          $wrapper.appendChild(elem);
+        }
+        // Update width
+        this.style.setProperty('--grid-width', newValue, "");
+        break;
 
-    for (let i = 1; i <= width * height; i++) {
-      const elem = document.createElement('div');
-      elem.innerHTML = i;
-      elem.setAttribute('class', 'elem');
-      $wrapper.appendChild(elem);
+      case 'height':
+        const width = this.getAttribute('width');
+        for (let i = 1; i <= width * newValue; i++) {
+          const elem = document.createElement('div');
+          elem.innerHTML = i;
+          elem.setAttribute('class', 'elem');
+          $wrapper.appendChild(elem);
+        }
+        // Update width
+        this.style.setProperty('--grid-width', width, "");
+        break;
     }
   }
 }
