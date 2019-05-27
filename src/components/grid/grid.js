@@ -31,6 +31,7 @@ export default class GameGrid extends HTMLElement {
     // Shadow root element
     this._shadowRoot = this.attachShadow({mode: 'open'});
     this._shadowRoot.appendChild(template.content.cloneNode(true));
+    this.$wrapper = this._shadowRoot.querySelector('.wrapper');
   }
 
   set width(val) {
@@ -44,14 +45,13 @@ export default class GameGrid extends HTMLElement {
   }
 
   _computeGrid(width, height) {
-    const $wrapper = this._shadowRoot.querySelector('.wrapper');
-    $wrapper.innerHTML = null;
+    this.$wrapper.innerHTML = null;
 
     for (let i = 1; i <= width * height; i++) {
       const elem = document.createElement('div');
       elem.innerHTML = i;
       elem.setAttribute('class', 'elem');
-      $wrapper.appendChild(elem);
+      this.$wrapper.appendChild(elem);
     }
     // Update width
     this.style.setProperty('--grid-width', width, "");
