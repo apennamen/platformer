@@ -1,6 +1,8 @@
+import SpriteGallery from 'containers/sprite-gallery';
 import GameGrid from 'components/grid/grid';
 import ValueSelector from 'components/value-selector/value-selector';
 
+window.customElements.define('sprite-gallery', SpriteGallery);
 window.customElements.define('game-grid', GameGrid);
 window.customElements.define('value-selector', ValueSelector);
 
@@ -18,6 +20,9 @@ window.onload = () => {
   widthSelector.initialValue = INITIAL_GRID_WIDTH;
   widthSelector.label = "Width:";
   document.body.appendChild(widthSelector);
+
+  const gallery = document.createElement('sprite-gallery');
+  document.body.appendChild(gallery);
 
   const grid = document.createElement('game-grid');
   grid.width = INITIAL_GRID_WIDTH;

@@ -1,3 +1,7 @@
+import GameTile from './tile';
+
+window.customElements.define('game-tile', GameTile);
+
 const template = document.createElement('template');
 template.innerHTML = `
   <style>
@@ -7,15 +11,14 @@ template.innerHTML = `
     
     .wrapper {
       display: grid;
-      grid-template-columns: repeat(var(--grid-width), 1fr);
+      grid-template-columns: repeat(var(--grid-width), 70px);
       grid-gap: 0;
-      grid-auto-rows: minmax(50px, auto);
+      grid-auto-rows: 70px;
     }
     
-    .elem {
+    .tile {
       border: 1px dashed grey;
       cursor: pointer;
-      text-align: center;
     }
   </style>
   <div class="wrapper"></div>
@@ -44,10 +47,9 @@ export default class GameGrid extends HTMLElement {
     this.$wrapper.innerHTML = null;
 
     for (let i = 1; i <= width * height; i++) {
-      const elem = document.createElement('div');
-      elem.innerHTML = i;
-      elem.setAttribute('class', 'elem');
-      this.$wrapper.appendChild(elem);
+      const tile = document.createElement('game-tile');
+      tile.setAttribute('class', 'tile');
+      this.$wrapper.appendChild(tile);
     }
     // Update width
     this.style.setProperty('--grid-width', width, "");
