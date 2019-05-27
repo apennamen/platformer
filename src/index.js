@@ -1,5 +1,5 @@
-import GameGrid from 'grid/grid';
-import ValueSelector from 'value-selector/value-selector';
+import GameGrid from 'components/grid/grid';
+import ValueSelector from 'components/value-selector/value-selector';
 
 window.customElements.define('game-grid', GameGrid);
 window.customElements.define('value-selector', ValueSelector);
@@ -10,11 +10,13 @@ window.onload = () => {
   const heightSelector = document.createElement('value-selector');
   heightSelector.addEventListener('onSelectValue', (e) => setGridHeight(e.detail));
   heightSelector.initialValue = INITIAL_GRID_HEIGHT;
+  heightSelector.label = "Height:";
   document.body.appendChild(heightSelector);
 
   const widthSelector = document.createElement('value-selector');
   widthSelector.addEventListener('onSelectValue', (e) => setGridWidth(e.detail));
   widthSelector.initialValue = INITIAL_GRID_WIDTH;
+  widthSelector.label = "Width:";
   document.body.appendChild(widthSelector);
 
   const grid = document.createElement('game-grid');
