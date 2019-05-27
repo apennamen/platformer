@@ -33,34 +33,27 @@ export default class GameGrid extends HTMLElement {
     this._shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
-  attributeChangedCallback(name, _, newValue) {
+  set width(val) {
+    this._width = val;
+    this._computeGrid(this._width, this._height);
+  }
+
+  set height(val) {
+    this._height = val;
+    this._computeGrid(this._width, this._height);
+  }
+
+  _computeGrid(width, height) {
     const $wrapper = this._shadowRoot.querySelector('.wrapper');
     $wrapper.innerHTML = null;
 
-    switch(name) {
-      case 'width':
-        const height = this.getAttribute('height');
-        for (let i = 1; i <= newValue * height; i++) {
-          const elem = document.createElement('div');
-          elem.innerHTML = i;
-          elem.setAttribute('class', 'elem');
-          $wrapper.appendChild(elem);
-        }
-        // Update width
-        this.style.setProperty('--grid-width', newValue, "");
-        break;
-
-      case 'height':
-        const width = this.getAttribute('width');
-        for (let i = 1; i <= width * newValue; i++) {
-          const elem = document.createElement('div');
-          elem.innerHTML = i;
-          elem.setAttribute('class', 'elem');
-          $wrapper.appendChild(elem);
-        }
-        // Update width
-        this.style.setProperty('--grid-width', width, "");
-        break;
+    for (let i = 1; i <= width * height; i++) {
+      const elem = document.createElement('div');
+      elem.innerHTML = i;
+      elem.setAttribute('class', 'elem');
+      $wrapper.appendChild(elem);
     }
+    // Update width
+    this.style.setProperty('--grid-width', width, "");
   }
 }

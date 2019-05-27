@@ -8,8 +8,8 @@ window.onload = () => {
   const INITIAL_GRID_HEIGHT = 10, INITIAL_GRID_WIDTH = 10;
 
   const heightSelector = document.createElement('value-selector');
-  heightSelector.initialValue = INITIAL_GRID_HEIGHT;
   heightSelector.addEventListener('onSelectValue', (e) => setGridHeight(e.detail));
+  heightSelector.initialValue = INITIAL_GRID_HEIGHT;
   document.body.appendChild(heightSelector);
 
   const widthSelector = document.createElement('value-selector');
@@ -18,16 +18,16 @@ window.onload = () => {
   document.body.appendChild(widthSelector);
 
   const grid = document.createElement('game-grid');
-  grid.setAttribute('width', 5);
-  grid.setAttribute('height', 5);
+  grid.width = INITIAL_GRID_WIDTH;
+  grid.height = INITIAL_GRID_HEIGHT;
   document.body.appendChild(grid);
 
   const setGridHeight = (height) => {
-    grid.setAttribute('height', height);
+    grid.height = height;
   };
 
   const setGridWidth = (width) => {
-    grid.setAttribute('width', width);
+    grid.width = width;
   }
 };
 
