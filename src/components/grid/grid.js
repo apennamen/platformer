@@ -22,10 +22,6 @@ template.innerHTML = `
 `;
 
 export default class GameGrid extends HTMLElement {
-  static get observedAttributes() {
-    return ['height', 'width'];
-  }
-
   constructor() {
     super();
     // Shadow root element
