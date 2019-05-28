@@ -1,12 +1,17 @@
 import SpriteGallery from 'containers/sprite-gallery';
+import AnimatedPlayer from 'containers/player';
 import GameGrid from 'components/grid/grid';
 import ValueSelector from 'components/value-selector/value-selector';
 
 window.customElements.define('sprite-gallery', SpriteGallery);
 window.customElements.define('game-grid', GameGrid);
 window.customElements.define('value-selector', ValueSelector);
+window.customElements.define('animated-player', AnimatedPlayer);
 
 window.onload = () => {
+  const player = document.createElement('animated-player');
+  document.body.appendChild(player);
+
   const INITIAL_GRID_HEIGHT = 10, INITIAL_GRID_WIDTH = 10;
 
   const heightSelector = document.createElement('value-selector');
