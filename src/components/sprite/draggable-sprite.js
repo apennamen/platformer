@@ -1,6 +1,11 @@
 const template = document.createElement('template');
 template.innerHTML = `
-  <img draggable="true" />  
+  <style>
+    .draggable-sprite:hover {
+        cursor:pointer;
+    }
+  </style>
+  <img class="draggable-sprite" draggable="true" />  
 `;
 
 export default class DraggableSprite extends HTMLElement {
@@ -28,7 +33,7 @@ export default class DraggableSprite extends HTMLElement {
     this.$img.setAttribute('src', url);
 
     this.addEventListener('dragstart', (e) => {
-      e.dataTransfer.setData("text/plain", url);
+      e.dataTransfer.setData("text/html", this._shadowRoot.innerHTML);
     });
   }
 }

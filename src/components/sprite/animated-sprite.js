@@ -43,6 +43,12 @@ export default class AnimatedSprite extends HTMLElement {
     this.$animatedSprite = this._shadowRoot.querySelector('#animated-sprite');
   }
 
+  connectedCallback() {
+    this.addEventListener('dragstart', (e) => {
+      this.dispatchEvent(new CustomEvent('onSpriteDragStart', {detail: e}));
+    });
+  }
+
   attributeChangedCallback(name, _, newValue) {
     switch (name) {
       case 'img-url':
