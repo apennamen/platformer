@@ -41,14 +41,12 @@ export default class DraggableSprite extends HTMLElement {
   }
 
   connectedCallback() {
-    this.addEventListener('dragstart', (e) => {
-      e.dataTransfer.setData("text/html", this._shadowRoot.innerHTML);
-    });
+    this.addEventListener('dragstart', this._attachHtmlToDragStartEvent);
     this._upgradeProperty('sprite');
   }
 
   disconnectedCallback() {
-    this.removeEventListener('dragstart');
+    this.removeEventListener('dragstart', this._attachHtmlToDragStartEvent);
   }
 
   set sprite(url) {
@@ -63,6 +61,10 @@ export default class DraggableSprite extends HTMLElement {
         break;
     }
   }
+
+  _attachHtmlToDragStartEvent(e) {
+    e.dataTransfer.setData("text/html", this._shadowRoot.innerHTML);
+  };
 
   _upgradeProperty(prop) {
     if (this.hasOwnProperty(prop)) {

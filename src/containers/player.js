@@ -18,10 +18,11 @@ template.innerHTML = `
 export default class AnimatedPlayer extends HTMLElement {
   constructor() {
     super();
-    // Shadow root element
     this._shadowRoot = this.attachShadow({mode: 'open'});
     this._shadowRoot.appendChild(template.content.cloneNode(true));
+  }
 
+  connectedCallback() {
     this._shadowRoot.querySelector('animated-sprite').addEventListener('onSpriteDragStart', (e) => {
       e.detail.dataTransfer.setData("text/html", template.innerHTML);
     })
