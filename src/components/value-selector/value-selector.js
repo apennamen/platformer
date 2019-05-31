@@ -6,21 +6,28 @@ template.innerHTML = `
 `;
 
 export default class ValueSelector extends HTMLElement {
+  static get observedAttributes() {
+    return [
+      'initial-value',
+      'label',
+      'min-range-value',
+      'max-range-value',
+    ];
+  }
   set initialValue(val) {
-    this.$input.setAttribute('value', val);
-    this.$display.innerHTML = val;
+    this.setAttribute('initial-value', val);
   }
 
   set label(val) {
-    this.$label.innerHTML = val;
+    this.setAttribute('label', val);
   }
 
   set minRangeValue(val) {
-    this.$input.setAttribute('min', val);
+    this.setAttribute('min-range-value', val);
   }
 
   set maxRangeValue(val) {
-    this.$input.setAttribute('max', val);
+    this.setAttribute('max-range-value', val);
   }
 
   constructor() {
@@ -30,10 +37,36 @@ export default class ValueSelector extends HTMLElement {
     this.$input = this._shadowRoot.querySelector('#selectorInput');
     this.$display = this._shadowRoot.querySelector('#selectorDisplayValue');
     this.$label = this._shadowRoot.querySelector('label');
+  }
 
-    this.$input.addEventListener('input', (e) => {
-      this.dispatchEvent(new CustomEvent('onSelectValue', { detail: this.$input.value }));
-      this.$display.innerHTML = this.$input.value;
-    });
+  connectedCallback() {
+    this.$input.addEventListener('input', () => this._dispatchInputValue());
+  }
+
+  discconnectedCallback() {
+    this.$input.removeEventListener('input', () => this._dispatchInputValue());
+  }
+
+  attributeChangedCallback(name, _, newValue) {
+    switch (name) {
+      case 'initial-value':
+        this.$input.setAttribute('value', newValue);
+        this.$display.innerHTML = newValue;
+        break;
+      case 'label':
+        this.$label.innerHTML = newValue;
+        break;
+      case 'min-range-value':
+        this.$input.setAttribute('min', newValue);
+        break;
+      case 'max-range-value':
+        this.$input.setAttribute('max', newValue);
+        break;
+    }
+  }
+
+  _dispatchInputValue() {
+    this.dispatchEvent(new CustomEvent('onSelectValue', { detail: this.$input.value }));
+    this.$display.innerHTML = this.$input.value;
   }
 }

@@ -20,11 +20,18 @@ export default class AnimatedPlayer extends HTMLElement {
     super();
     this._shadowRoot = this.attachShadow({mode: 'open'});
     this._shadowRoot.appendChild(template.content.cloneNode(true));
+    this.$animatedSprite = this._shadowRoot.querySelector('animated-sprite');
   }
 
   connectedCallback() {
-    this._shadowRoot.querySelector('animated-sprite').addEventListener('onSpriteDragStart', (e) => {
-      e.detail.dataTransfer.setData("text/html", template.innerHTML);
-    })
+    this.$animatedSprite.addEventListener('onSpriteDragStart', attachHtmlToSpriteDragStartEvent)
   }
+
+  disconnectedCallback() {
+    this.$animatedSprite.removeEventListener('onSpriteDragStart', attachHtmlToSpriteDragStartEvent)
+  }
+}
+
+function attachHtmlToSpriteDragStartEvent(e) {
+  e.detail.dataTransfer.setData("text/html", template.innerHTML);
 }
