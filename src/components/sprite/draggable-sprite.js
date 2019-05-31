@@ -1,6 +1,12 @@
 const template = document.createElement('template');
 template.innerHTML = `
   <style>
+    :host {
+      display: inline-block;
+    }
+    :host([hidden]) {
+      display: none;
+    }
     .draggable-sprite:hover {
         cursor:pointer;
     }
@@ -21,19 +27,36 @@ export default class DraggableSprite extends HTMLElement {
     this.$img = this._shadowRoot.querySelector('img');
   }
 
+  connectedCallback() {
+    this._upgradeProperty('sprite');
+  }
+
   attributeChangedCallback(name, _, newValue) {
     switch (name) {
       case 'sprite':
-        this.sprite = newValue;
+        // Handles side effect
+        this.$img.setAttribute('src', newValue);
+        this.addEventListener('dragstart', (e) => {
+          e.dataTransfer.setData("text/html", this._shadowRoot.innerHTML);
+        });
         break;
     }
   }
 
-  set sprite(url) {
-    this.$img.setAttribute('src', url);
+  disconnectedCallback() {
+    this.removeEventListener('dragstart');
+  }
 
-    this.addEventListener('dragstart', (e) => {
-      e.dataTransfer.setData("text/html", this._shadowRoot.innerHTML);
-    });
+  set sprite(url) {
+    // Reflects property to attribute
+    this.setAttribute('sprite', url);
+  }
+
+  _upgradeProperty(prop) {
+    if (this.hasOwnProperty(prop)) {
+      let value = this[prop];
+      delete this[prop];
+      this[prop] = value;
+    }
   }
 }
