@@ -1,4 +1,4 @@
-import player from 'assets/sprites/player2.png';
+import player from 'assets/sprites/character/player2.png';
 import AnimatedSprite from 'components/sprite/animated-sprite';
 
 window.customElements.define('animated-sprite', AnimatedSprite);
