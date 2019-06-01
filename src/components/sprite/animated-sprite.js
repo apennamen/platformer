@@ -22,14 +22,13 @@ template.innerHTML = `
     .animated-sprite {
       width: var(--sprite-width);
       height: var(--sprite-height);
-      animation: play var(--animation-rate) steps(var(--steps-number)) infinite;
     }
     
     .animated-sprite:hover {
       cursor: pointer;
     }
   </style>
-  <div class="animated-sprite" draggable="true"></div>
+  <div class="animated-sprite" ></div>
 `;
 
 /**
@@ -42,7 +41,6 @@ template.innerHTML = `
  * @param {number] spriteWidth - the width of one animation (must be the same for every animation)
  * @param {number] spriteHeight - the width of one animation (must be the same for every animation)
  * @param {string} animationRate - in second
- * @event {CustomEvent} onSpriteDragStart - encapsulate the dragstart event
  *
  * ## Usage:
  * import AnimatedSprite from 'path/to/draggable-sprite';
@@ -80,8 +78,6 @@ export default class AnimatedSprite extends HTMLElement {
   }
 
   connectedCallback() {
-    this.addEventListener('dragstart', this.dispatchEventDragStart);
-
     this.upgradeProperty('total-img-width');
     this.upgradeProperty('sprite-width');
     this.upgradeProperty('sprite-height');
@@ -91,7 +87,7 @@ export default class AnimatedSprite extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.removeEventListener('dragstart', this.dispatchEventDragStart);
+    this.$animatedSprite.removeEventListener('animationend', this.onAnimationEnd);
   }
 
   set totalImgWidth(totalImgWidth) {
@@ -131,6 +127,15 @@ export default class AnimatedSprite extends HTMLElement {
     }
   }
 
+  play() {
+    this.$animatedSprite.style.setProperty('animation', 'play var(--animation-rate) steps(var(--steps-number))');
+    this.$animatedSprite.addEventListener('animationend', this.onAnimationEnd.bind(this));
+  }
+
+  onAnimationEnd() {
+    this.$animatedSprite.style.removeProperty('animation');
+  }
+
   updatePlayKeyframeRule(imgWidth) {
     const { cssRules } = this.shadow.styleSheets[0];
     // We need to find the keyframe rule to modify, it's name is defined in CSS as 'play'
@@ -138,10 +143,6 @@ export default class AnimatedSprite extends HTMLElement {
     if (playRule) {
       playRule.cssRules[0].style.setProperty('background-position', `-${imgWidth}`, '');
     }
-  }
-
-  dispatchEventDragStart(e) {
-    this.dispatchEvent(new CustomEvent('onSpriteDragStart', { detail: e }));
   }
 
   upgradeProperty(prop) {
