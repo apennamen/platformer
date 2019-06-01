@@ -15,23 +15,23 @@ template.innerHTML = `
   ></animated-sprite>
 `;
 
+function attachHtmlToSpriteDragStartEvent(e) {
+  e.detail.dataTransfer.setData('text/html', template.innerHTML);
+}
+
 export default class AnimatedPlayer extends HTMLElement {
   constructor() {
     super();
-    this._shadowRoot = this.attachShadow({mode: 'open'});
-    this._shadowRoot.appendChild(template.content.cloneNode(true));
-    this.$animatedSprite = this._shadowRoot.querySelector('animated-sprite');
+    this.shadow = this.attachShadow({ mode: 'open' });
+    this.shadow.appendChild(template.content.cloneNode(true));
+    this.$animatedSprite = this.shadow.querySelector('animated-sprite');
   }
 
   connectedCallback() {
-    this.$animatedSprite.addEventListener('onSpriteDragStart', attachHtmlToSpriteDragStartEvent)
+    this.$animatedSprite.addEventListener('onSpriteDragStart', attachHtmlToSpriteDragStartEvent);
   }
 
   disconnectedCallback() {
-    this.$animatedSprite.removeEventListener('onSpriteDragStart', attachHtmlToSpriteDragStartEvent)
+    this.$animatedSprite.removeEventListener('onSpriteDragStart', attachHtmlToSpriteDragStartEvent);
   }
-}
-
-function attachHtmlToSpriteDragStartEvent(e) {
-  e.detail.dataTransfer.setData("text/html", template.innerHTML);
 }

@@ -40,7 +40,7 @@ export default class SpriteGallery extends HTMLElement {
   constructor() {
     super();
     // Shadow root element
-    this._shadowRoot = this.attachShadow({mode: 'closed'});
-    this._shadowRoot.appendChild(template.content.cloneNode(true));
+    this.shadow = this.attachShadow({ mode: 'closed' });
+    this.shadow.appendChild(template.content.cloneNode(true));
   }
 }

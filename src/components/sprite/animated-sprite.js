@@ -1,4 +1,4 @@
-/* The "play" keyframe rule will be updated in JS depending on the size of the sprite  */
+/* The 'play' keyframe rule will be updated in JS depending on the size of the sprite  */
 const template = document.createElement('template');
 template.innerHTML = `
   <style>
@@ -33,7 +33,8 @@ template.innerHTML = `
 `;
 
 /**
- * Animated sprite, from a continuous "tape" sprite: each picture of the animation must be the same size.
+ * Animated sprite, from a continuous 'tape' sprite:
+ * each picture of the animation must be the same size.
  *
  * @param {number] totalImgWidth - the total size of the image containing the animation
  * @param {string] imgUrl - the URL to this image
@@ -67,29 +68,30 @@ export default class AnimatedSprite extends HTMLElement {
       'sprite-height',
       'img-url',
       'animation-rate',
-      'steps-number'
+      'steps-number',
     ];
   }
+
   constructor() {
     super();
-    this._shadowRoot = this.attachShadow({mode: 'open'});
-    this._shadowRoot.appendChild(template.content.cloneNode(true));
-    this.$animatedSprite = this._shadowRoot.querySelector('.animated-sprite');
+    this.shadow = this.attachShadow({ mode: 'open' });
+    this.shadow.appendChild(template.content.cloneNode(true));
+    this.$animatedSprite = this.shadow.querySelector('.animated-sprite');
   }
 
   connectedCallback() {
-    this.addEventListener('dragstart', this._dispatchEventDragStart);
+    this.addEventListener('dragstart', this.dispatchEventDragStart);
 
-    this._upgradeProperty('total-img-width');
-    this._upgradeProperty('sprite-width');
-    this._upgradeProperty('sprite-height');
-    this._upgradeProperty('img-url');
-    this._upgradeProperty('animation-rate');
-    this._upgradeProperty('steps-number');
+    this.upgradeProperty('total-img-width');
+    this.upgradeProperty('sprite-width');
+    this.upgradeProperty('sprite-height');
+    this.upgradeProperty('img-url');
+    this.upgradeProperty('animation-rate');
+    this.upgradeProperty('steps-number');
   }
 
   disconnectedCallback() {
-    this.removeEventListener('dragstart', this._dispatchEventDragStart);
+    this.removeEventListener('dragstart', this.dispatchEventDragStart);
   }
 
   set totalImgWidth(totalImgWidth) {
@@ -119,35 +121,32 @@ export default class AnimatedSprite extends HTMLElement {
   attributeChangedCallback(name, _, newValue) {
     switch (name) {
       case 'img-url':
-        this.$animatedSprite.style.setProperty('background', `url(${newValue}) left center`, "");
+        this.$animatedSprite.style.setProperty('background', `url(${newValue}) left center`, '');
         break;
       case 'total-img-width':
-        this._updatePlayKeyframeRule(newValue);
+        this.updatePlayKeyframeRule(newValue);
         break;
       default:
-        this.style.setProperty(`--${name}`, newValue, "");
+        this.style.setProperty(`--${name}`, newValue, '');
     }
   }
 
-  _updatePlayKeyframeRule(imgWidth) {
-    const cssRules = this._shadowRoot.styleSheets[0].cssRules;
+  updatePlayKeyframeRule(imgWidth) {
+    const { cssRules } = this.shadow.styleSheets[0];
     // We need to find the keyframe rule to modify, it's name is defined in CSS as 'play'
-    for(let rule of cssRules) {
-      if(rule.name && rule.name === 'play') {
-        // We update the CSSStyleSheetDeclaration to allow correct animation
-        rule.cssRules[0].style.setProperty('background-position', `-${imgWidth}`, "");
-        break;
-      }
+    const playRule = [...cssRules].find(rule => rule.name && rule.name === 'play');
+    if (playRule) {
+      playRule.cssRules[0].style.setProperty('background-position', `-${imgWidth}`, '');
     }
   }
 
-  _dispatchEventDragStart(e) {
-    this.dispatchEvent(new CustomEvent('onSpriteDragStart', {detail: e}));
+  dispatchEventDragStart(e) {
+    this.dispatchEvent(new CustomEvent('onSpriteDragStart', { detail: e }));
   }
 
-  _upgradeProperty(prop) {
-    if (this.hasOwnProperty(prop)) {
-      let value = this[prop];
+  upgradeProperty(prop) {
+    if (Object.prototype.hasOwnProperty.call(this, prop)) {
+      const value = this[prop];
       delete this[prop];
       this[prop] = value;
     }

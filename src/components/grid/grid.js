@@ -28,30 +28,31 @@ export default class GameGrid extends HTMLElement {
   constructor() {
     super();
     // Shadow root element
-    this._shadowRoot = this.attachShadow({mode: 'open'});
-    this._shadowRoot.appendChild(template.content.cloneNode(true));
-    this.$wrapper = this._shadowRoot.querySelector('.wrapper');
+    this.shadow = this.attachShadow({ mode: 'open' });
+    this.shadow.appendChild(template.content.cloneNode(true));
+    this.$wrapper = this.shadow.querySelector('.wrapper');
   }
 
   set width(val) {
-    this._width = val;
-    this._computeGrid(this._width, this._height);
+    this.gridWidth = val;
+    this.computeGrid(this.gridWidth, this.gridHeight);
   }
 
   set height(val) {
-    this._height = val;
-    this._computeGrid(this._width, this._height);
+    this.gridHeight = val;
+    this.computeGrid(this.gridWidth, this.gridHeight);
   }
 
-  _computeGrid(width, height) {
+  computeGrid(width, height) {
     this.$wrapper.innerHTML = null;
 
+    /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
     for (let i = 1; i <= width * height; i++) {
       const tile = document.createElement('game-tile');
       tile.setAttribute('class', 'tile');
       this.$wrapper.appendChild(tile);
     }
     // Update width
-    this.style.setProperty('--grid-width', width, "");
+    this.style.setProperty('--grid-width', width, '');
   }
 }

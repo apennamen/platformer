@@ -35,18 +35,18 @@ export default class DraggableSprite extends HTMLElement {
 
   constructor() {
     super();
-    this._shadowRoot = this.attachShadow({mode: 'open'});
-    this._shadowRoot.appendChild(template.content.cloneNode(true));
-    this.$img = this._shadowRoot.querySelector('img');
+    this.shadow = this.attachShadow({ mode: 'open' });
+    this.shadow.appendChild(template.content.cloneNode(true));
+    this.$img = this.shadow.querySelector('img');
   }
 
   connectedCallback() {
-    this.addEventListener('dragstart', this._attachHtmlToDragStartEvent);
-    this._upgradeProperty('sprite');
+    this.addEventListener('dragstart', this.attachHtmlToDragStartEvent);
+    this.upgradeProperty('sprite');
   }
 
   disconnectedCallback() {
-    this.removeEventListener('dragstart', this._attachHtmlToDragStartEvent);
+    this.removeEventListener('dragstart', this.attachHtmlToDragStartEvent);
   }
 
   set sprite(url) {
@@ -59,16 +59,18 @@ export default class DraggableSprite extends HTMLElement {
       case 'sprite':
         this.$img.setAttribute('src', newValue);
         break;
+      default:
+        break;
     }
   }
 
-  _attachHtmlToDragStartEvent(e) {
-    e.dataTransfer.setData("text/html", this._shadowRoot.innerHTML);
-  };
+  attachHtmlToDragStartEvent(e) {
+    e.dataTransfer.setData('text/html', this.shadow.innerHTML);
+  }
 
-  _upgradeProperty(prop) {
-    if (this.hasOwnProperty(prop)) {
-      let value = this[prop];
+  upgradeProperty(prop) {
+    if (Object.prototype.hasOwnProperty.call(this, prop)) {
+      const value = this[prop];
       delete this[prop];
       this[prop] = value;
     }

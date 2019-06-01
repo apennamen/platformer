@@ -14,6 +14,7 @@ export default class ValueSelector extends HTMLElement {
       'max-range-value',
     ];
   }
+
   set initialValue(val) {
     this.setAttribute('initial-value', val);
   }
@@ -32,19 +33,19 @@ export default class ValueSelector extends HTMLElement {
 
   constructor() {
     super();
-    this._shadowRoot = this.attachShadow({ 'mode': 'open' });
-    this._shadowRoot.appendChild(template.content.cloneNode(true));
-    this.$input = this._shadowRoot.querySelector('#selectorInput');
-    this.$display = this._shadowRoot.querySelector('#selectorDisplayValue');
-    this.$label = this._shadowRoot.querySelector('label');
+    this.shadow = this.attachShadow({ mode: 'open' });
+    this.shadow.appendChild(template.content.cloneNode(true));
+    this.$input = this.shadow.querySelector('#selectorInput');
+    this.$display = this.shadow.querySelector('#selectorDisplayValue');
+    this.$label = this.shadow.querySelector('label');
   }
 
   connectedCallback() {
-    this.$input.addEventListener('input', () => this._dispatchInputValue());
+    this.$input.addEventListener('input', () => this.dispatchInputValue());
   }
 
   discconnectedCallback() {
-    this.$input.removeEventListener('input', () => this._dispatchInputValue());
+    this.$input.removeEventListener('input', () => this.dispatchInputValue());
   }
 
   attributeChangedCallback(name, _, newValue) {
@@ -62,10 +63,12 @@ export default class ValueSelector extends HTMLElement {
       case 'max-range-value':
         this.$input.setAttribute('max', newValue);
         break;
+      default:
+        break;
     }
   }
 
-  _dispatchInputValue() {
+  dispatchInputValue() {
     this.dispatchEvent(new CustomEvent('onSelectValue', { detail: this.$input.value }));
     this.$display.innerHTML = this.$input.value;
   }
