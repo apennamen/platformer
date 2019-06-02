@@ -29,10 +29,25 @@ window.onload = () => {
   widthSelector.initialValue = grid.width;
   widthSelector.label = 'Width:';
 
+  const gridToggle = document.createElement('input');
+  gridToggle.type = 'checkbox';
+  gridToggle.id = 'gridCheckbox';
+  gridToggle.checked = true;
+  grid.show(gridToggle.checked);
+  gridToggle.addEventListener('change', function toggleGrid() {
+    grid.show(this.checked);
+  });
+
+  const label = document.createElement('label');
+  label.setAttribute('for', gridToggle.id);
+  label.innerHTML = 'Show grid';
+
   const gallery = document.createElement('sprite-gallery');
 
   document.body.appendChild(heightSelector);
   document.body.appendChild(widthSelector);
+  document.body.appendChild(gridToggle);
+  document.body.appendChild(label);
   document.body.appendChild(gallery);
   document.body.appendChild(grid);
 };

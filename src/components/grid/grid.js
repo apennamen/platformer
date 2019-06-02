@@ -29,7 +29,6 @@ template.innerHTML = `
     }
     
     .tile {
-      border: 1px dashed grey;
       cursor: pointer;
     }
     
@@ -155,6 +154,15 @@ export default class GameGrid extends HTMLElement {
         tile.setAttribute('id', `${i}-${j % (width + 1)}`);
         this.$wrapper.appendChild(tile);
       }
+    }
+  }
+
+  show(showGrid) {
+    const tiles = this.shadow.querySelectorAll('.tile');
+    if (showGrid) {
+      tiles.forEach(tile => tile.style.setProperty('border', '1px dashed grey'));
+    } else {
+      tiles.forEach(tile => tile.style.removeProperty('border'));
     }
   }
 }
