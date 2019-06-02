@@ -37,7 +37,7 @@ export default class AnimatedPlayer extends HTMLElement {
     this.animatedSprite.imgUrl = jump;
     this.animatedSprite.totalImgWidth = '260px';
     this.animatedSprite.stepsNumber = 5;
-    this.animatedSprite.animationRate = '0.5s';
+    this.animatedSprite.animationRate = '0.9s';
   }
 
   loadWalk() {

@@ -33,8 +33,12 @@ template.innerHTML = `
     }
     
     @keyframes up {
-        0% {margin-top: 0}
-        100% {margin-top: -70px}
+        0% {margin-top: 0; transform: scale(1, 1)}
+        10% {margin-top: 5px; transform: scale(1, 0.95)}
+        35% {margin-top: -60px; transform: scale(1, 1.05)}
+        80% {margin-top: 0; transform: scale(1, 1)}
+        90% {transform: scale(1, 0.95)}
+        100% {margin-top: 0; transform: scale(1, 1)}
     }
     
     @keyframes down {
@@ -75,9 +79,8 @@ export default class GameGrid extends HTMLElement {
         case 'ArrowUp':
           if (playerRow === 1) break;
           this.player.jump();
-          this.player.style.setProperty('animation', 'up 0.5s ease');
+          this.player.style.setProperty('animation', 'up 0.9s linear');
           this.player.addEventListener('animationend', () => {
-            this.style.setProperty('--player-row-pos', playerRow - 1, '');
             this.player.style.removeProperty('animation');
           });
           break;
