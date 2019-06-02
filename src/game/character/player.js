@@ -1,6 +1,6 @@
 import walk from 'assets/sprites/player/walk.png';
 import jump from 'assets/sprites/player/jump.png';
-import AnimatedSprite from 'components/sprite/animated-sprite';
+import AnimatedSprite from 'core/sprite/animated-sprite';
 
 window.customElements.define('animated-sprite', AnimatedSprite);
 

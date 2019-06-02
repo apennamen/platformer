@@ -1,4 +1,4 @@
-import DraggableSprite from 'components/sprite/draggable-sprite';
+import DraggableSprite from 'core/sprite/draggable-sprite';
 import shiningcarpet from 'assets/sprites/shining/carpet1.png';
 import shiningcarpet2 from 'assets/sprites/shining/carpet2.png';
 import wall1 from 'assets/sprites/shining/wall1.png';

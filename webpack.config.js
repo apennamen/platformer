@@ -4,8 +4,14 @@ const path = require('path');
 module.exports = {
   mode: 'development',
   devtool: 'inline-source-map',
-  devServer: {
-    contentBase: './dist'
+  entry: {
+    'level-design': './src/level-design/index',
+    'game': './src/game/index',
+  },
+  output: {
+    path: __dirname,
+    filename: 'dist/[name]/main.js',
+    publicPath: '/',
   },
   resolve: {
     modules: [path.resolve(__dirname, 'src'), 'node_modules']
@@ -47,8 +53,14 @@ module.exports = {
   },
   plugins: [
     new HtmlWebPackPlugin({
-      template: "./src/index.html",
-      filename: "./index.html"
-    })
+      chunks: ['level-design'],
+      template: "./src/level-design/index.html",
+      filename: "dist/level-design/index.html"
+    }),
+    new HtmlWebPackPlugin({
+      chunks: ['game'],
+      template: "./src/game/index.html",
+      filename: "dist/game/index.html"
+    }),
   ]
 };

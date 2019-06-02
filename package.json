@@ -8,7 +8,8 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "dev": "webpack-dev-server --open",
+    "level-design": "webpack-dev-server --open  --open-page dist/level-design",
+    "game": "webpack-dev-server --open --open-page dist/game",
     "build": "webpack --mode production"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
-import SpriteGallery from 'containers/sprite-gallery';
-import GameGrid from 'components/grid/grid';
-import ValueSelector from 'components/value-selector/value-selector';
+import SpriteGallery from 'level-design/sprite-gallery';
+import GameGrid from 'level-design/grid/grid';
+import ValueSelector from 'level-design/value-selector/value-selector';
 
 window.customElements.define('sprite-gallery', SpriteGallery);
 window.customElements.define('game-grid', GameGrid);

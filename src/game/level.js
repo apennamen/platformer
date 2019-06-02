@@ -1,5 +1,5 @@
-import AnimatedPlayer from 'containers/player';
-import GameTile from './tile';
+import AnimatedPlayer from 'game/character/player';
+import GameTile from 'level-design/grid/tile';
 
 window.customElements.define('animated-player', AnimatedPlayer);
 window.customElements.define('game-tile', GameTile);
@@ -30,6 +30,7 @@ template.innerHTML = `
     
     .tile {
       cursor: pointer;
+      border: 1px dashed grey;
     }
     
     @keyframes up {
@@ -59,7 +60,7 @@ template.innerHTML = `
   <div class="wrapper"></div>
 `;
 
-export default class GameGrid extends HTMLElement {
+export default class GameLevel extends HTMLElement {
   constructor() {
     super();
     // Shadow root element
@@ -157,15 +158,6 @@ export default class GameGrid extends HTMLElement {
         tile.setAttribute('id', `${i}-${j % (width + 1)}`);
         this.$wrapper.appendChild(tile);
       }
-    }
-  }
-
-  show(showGrid) {
-    const tiles = this.shadow.querySelectorAll('.tile');
-    if (showGrid) {
-      tiles.forEach(tile => tile.style.setProperty('border', '1px dashed grey'));
-    } else {
-      tiles.forEach(tile => tile.style.removeProperty('border'));
     }
   }
 }
