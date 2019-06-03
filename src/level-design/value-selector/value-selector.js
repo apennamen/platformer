@@ -19,6 +19,10 @@ export default class ValueSelector extends HTMLElement {
     this.setAttribute('initial-value', val);
   }
 
+  get value() {
+    return this.$input.value;
+  }
+
   set label(val) {
     this.setAttribute('label', val);
   }

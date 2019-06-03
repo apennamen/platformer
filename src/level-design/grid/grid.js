@@ -6,8 +6,8 @@ const template = document.createElement('template');
 template.innerHTML = `
   <style>
     :host {
-        --grid-width: 10;
-        --grid-height: 10;
+        --grid-width: 0;
+        --grid-height: 0;
     }
     
     .wrapper {
@@ -54,6 +54,7 @@ export default class GameGrid extends HTMLElement {
 
   computeGrid(width, height) {
     this.$wrapper.innerHTML = null;
+    const fragment = document.createDocumentFragment();
 
     /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
     for (let i = height; i > 0; i--) {
@@ -62,9 +63,11 @@ export default class GameGrid extends HTMLElement {
         const tile = document.createElement('game-tile');
         tile.setAttribute('class', 'tile');
         tile.setAttribute('id', `${i}-${j % (width + 1)}`);
-        this.$wrapper.appendChild(tile);
+        tile.style.setProperty('border', '1px dashed grey');
+        fragment.appendChild(tile);
       }
     }
+    this.$wrapper.appendChild(fragment);
   }
 
   show(showGrid) {

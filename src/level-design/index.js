@@ -7,35 +7,47 @@ window.customElements.define('game-grid', GameGrid);
 window.customElements.define('value-selector', ValueSelector);
 
 window.onload = () => {
-  const grid = document.createElement('game-grid');
-  grid.width = 15;
-  grid.height = 7;
+  const levelDesigner = document.createElement('template');
+  levelDesigner.innerHTML = `
+    <div class="levelDesigner" style="display: flex; overflow: auto;"></div>
+  `;
+
+  const level1 = document.createElement('game-grid');
+  const level2 = document.createElement('game-grid');
 
   const setGridHeight = ({ detail }) => {
-    grid.height = detail;
+    level1.height = detail;
+    level2.height = detail;
   };
 
   const setGridWidth = ({ detail }) => {
-    grid.width = detail;
+    level1.width = detail;
+    level2.width = detail;
   };
 
   const heightSelector = document.createElement('value-selector');
   heightSelector.addEventListener('onSelectValue', setGridHeight);
-  heightSelector.initialValue = grid.height;
+  heightSelector.initialValue = 7;
   heightSelector.label = 'Height:';
+  level1.height = heightSelector.value;
+  level2.height = heightSelector.value;
 
   const widthSelector = document.createElement('value-selector');
   widthSelector.addEventListener('onSelectValue', setGridWidth);
-  widthSelector.initialValue = grid.width;
+  widthSelector.initialValue = 15;
   widthSelector.label = 'Width:';
+  level1.width = widthSelector.value;
+  level2.width = widthSelector.value;
 
   const gridToggle = document.createElement('input');
   gridToggle.type = 'checkbox';
   gridToggle.id = 'gridCheckbox';
   gridToggle.checked = true;
-  grid.show(gridToggle.checked);
+  level1.show(gridToggle.checked);
+  level2.show(gridToggle.checked);
   gridToggle.addEventListener('change', function toggleGrid() {
-    grid.show(this.checked);
+    level1.show(this.checked);
+    level2.show(this.checked);
   });
 
   const label = document.createElement('label');
@@ -44,10 +56,12 @@ window.onload = () => {
 
   const gallery = document.createElement('sprite-gallery');
 
+  levelDesigner.content.querySelector('.levelDesigner').appendChild(level1);
+  levelDesigner.content.querySelector('.levelDesigner').appendChild(level2);
   document.body.appendChild(heightSelector);
   document.body.appendChild(widthSelector);
   document.body.appendChild(gridToggle);
   document.body.appendChild(label);
   document.body.appendChild(gallery);
-  document.body.appendChild(grid);
+  document.body.appendChild(levelDesigner.content);
 };
