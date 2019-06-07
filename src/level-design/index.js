@@ -11,43 +11,40 @@ window.onload = () => {
   levelDesigner.innerHTML = `
     <div class="levelDesigner" style="display: flex; overflow: auto;"></div>
   `;
+  levelDesigner.screens = [];
 
-  const level1 = document.createElement('game-grid');
-  const level2 = document.createElement('game-grid');
+  /* eslint no-plusplus: ["error", { "allowForLoopAfterthoughts": true }] */
+  for (let i = 0; i < 3; i++) {
+    levelDesigner.screens.push(document.createElement('game-grid'));
+  }
 
   const setGridHeight = ({ detail }) => {
-    level1.height = detail;
-    level2.height = detail;
+    levelDesigner.screens.forEach((screen) => { screen.height = detail; });
   };
 
   const setGridWidth = ({ detail }) => {
-    level1.width = detail;
-    level2.width = detail;
+    levelDesigner.screens.forEach((screen) => { screen.width = detail; });
   };
 
   const heightSelector = document.createElement('value-selector');
   heightSelector.addEventListener('onSelectValue', setGridHeight);
   heightSelector.initialValue = 7;
   heightSelector.label = 'Height:';
-  level1.height = heightSelector.value;
-  level2.height = heightSelector.value;
+  levelDesigner.screens.forEach((screen) => { screen.height = heightSelector.value; });
 
   const widthSelector = document.createElement('value-selector');
   widthSelector.addEventListener('onSelectValue', setGridWidth);
   widthSelector.initialValue = 15;
   widthSelector.label = 'Width:';
-  level1.width = widthSelector.value;
-  level2.width = widthSelector.value;
+  levelDesigner.screens.forEach((screen) => { screen.width = widthSelector.value; });
 
   const gridToggle = document.createElement('input');
   gridToggle.type = 'checkbox';
   gridToggle.id = 'gridCheckbox';
   gridToggle.checked = true;
-  level1.show(gridToggle.checked);
-  level2.show(gridToggle.checked);
+  levelDesigner.screens.forEach(screen => screen.show(gridToggle.checked));
   gridToggle.addEventListener('change', function toggleGrid() {
-    level1.show(this.checked);
-    level2.show(this.checked);
+    levelDesigner.screens.forEach(screen => screen.show(this.checked));
   });
 
   const label = document.createElement('label');
@@ -56,12 +53,40 @@ window.onload = () => {
 
   const gallery = document.createElement('sprite-gallery');
 
-  levelDesigner.content.querySelector('.levelDesigner').appendChild(level1);
-  levelDesigner.content.querySelector('.levelDesigner').appendChild(level2);
+  const saveButton = document.createElement('button');
+  saveButton.innerHTML = 'Save';
+  saveButton.type = 'button';
+  saveButton.addEventListener('click', () => {
+    levelDesigner.screens.forEach((screen, index) => screen.save(index));
+  });
+
+  const loadButton = document.createElement('button');
+  loadButton.innerHTML = 'Load';
+  loadButton.type = 'button';
+  loadButton.addEventListener('click', () => {
+    levelDesigner.screens.forEach((screen, index) => screen.load(index));
+  });
+
+  const clearButton = document.createElement('button');
+  clearButton.innerHTML = 'Clear';
+  clearButton.type = 'button';
+  clearButton.addEventListener('click', () => {
+    const confirm = window.confirm('This cannot be undone !');
+    if (confirm) {
+      localStorage.clear();
+    }
+  });
+
+  levelDesigner.screens.forEach((screen) => {
+    levelDesigner.content.querySelector('.levelDesigner').appendChild(screen);
+  });
   document.body.appendChild(heightSelector);
   document.body.appendChild(widthSelector);
   document.body.appendChild(gridToggle);
   document.body.appendChild(label);
+  document.body.appendChild(saveButton);
+  document.body.appendChild(loadButton);
+  document.body.appendChild(clearButton);
   document.body.appendChild(gallery);
   document.body.appendChild(levelDesigner.content);
 };

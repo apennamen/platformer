@@ -73,9 +73,25 @@ export default class GameGrid extends HTMLElement {
   show(showGrid) {
     const tiles = this.shadow.querySelectorAll('.tile');
     if (showGrid) {
+      this.$wrapper.style.setProperty('border', '1px solid black');
       tiles.forEach(tile => tile.style.setProperty('border', '1px dashed grey'));
     } else {
+      this.$wrapper.style.removeProperty('border');
       tiles.forEach(tile => tile.style.removeProperty('border'));
     }
+  }
+
+  save(screenIndex) {
+    const tiles = this.shadow.querySelectorAll('.tile');
+    tiles.forEach((tile) => {
+      localStorage.setItem(`${screenIndex}-${tile.id}`, tile.innerHTML);
+    });
+  }
+
+  load(screenIndex) {
+    const tiles = this.shadow.querySelectorAll('.tile');
+    tiles.forEach((tile) => {
+      tile.innerHTML = localStorage.getItem(`${screenIndex}-${tile.id}`);
+    });
   }
 }
