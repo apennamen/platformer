@@ -8,6 +8,7 @@ template.innerHTML = `
     :host {
         --grid-width: 0;
         --grid-height: 0;
+        --tile-background-color: #fff;
     }
     
     .wrapper {
@@ -20,6 +21,7 @@ template.innerHTML = `
     
     .tile {
       cursor: pointer;
+      background-color: var(--tile-background-color);
     }
   </style>
   <div class="wrapper"></div>
@@ -50,6 +52,10 @@ export default class GameGrid extends HTMLElement {
 
   get height() {
     return +this.style.getPropertyValue('--grid-height');
+  }
+
+  set tileColor(val) {
+    this.style.setProperty('--tile-background-color', val);
   }
 
   computeGrid(width, height) {

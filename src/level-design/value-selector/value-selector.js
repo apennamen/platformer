@@ -1,7 +1,7 @@
 const template = document.createElement('template');
 template.innerHTML = `
   <label for"selector"></label>
-  <input type="range" id="selectorInput" name="selector" min="1" max="30" class="slider" />
+  <input type="range" id="selectorInput" name="selector" step="1" class="slider" />
   <output id="selectorDisplayValue" />
 `;
 

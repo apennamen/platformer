@@ -1,7 +1,9 @@
 import SpriteGallery from 'level-design/sprite-gallery';
 import GameGrid from 'level-design/grid/grid';
 import ValueSelector from 'level-design/value-selector/value-selector';
+import ColorPicker from 'level-design/color-picker';
 
+window.customElements.define('color-picker', ColorPicker);
 window.customElements.define('sprite-gallery', SpriteGallery);
 window.customElements.define('game-grid', GameGrid);
 window.customElements.define('value-selector', ValueSelector);
@@ -47,6 +49,11 @@ window.onload = () => {
     levelDesigner.screens.forEach(screen => screen.show(this.checked));
   });
 
+  const colorPicker = document.createElement('color-picker');
+  colorPicker.addEventListener('onColorChange', ({ detail }) => {
+    levelDesigner.screens.forEach((screen) => { screen.tileColor = detail; });
+  });
+
   const label = document.createElement('label');
   label.setAttribute('for', gridToggle.id);
   label.innerHTML = 'Show grid';
@@ -80,6 +87,7 @@ window.onload = () => {
   levelDesigner.screens.forEach((screen) => {
     levelDesigner.content.querySelector('.levelDesigner').appendChild(screen);
   });
+  document.body.appendChild(colorPicker);
   document.body.appendChild(heightSelector);
   document.body.appendChild(widthSelector);
   document.body.appendChild(gridToggle);
